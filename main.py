@@ -1,19 +1,42 @@
+from pathlib import Path
+
+import click
 import torch.cuda
+import torch.optim as optim
+import tqdm
+import yaml
 from PIL import Image
 from torchvision.transforms import Compose, Normalize, Resize, ToTensor, Lambda, ToPILImage
-import torch.optim as optim
 
-import tqdm
 from src.losses import TotalLoss
 from src.model import VGG19
 from src.transforms import Denormalize
-from config import IMAGE_DIR
 
 
+@click.command()
+@click.option('-content', '--content_image_path', type=click.Path(), help='Path to content image')
+@click.option('-style', '--style_image_path', type=click.Path(), help='Path to content image')
+@click.option('-p', '--params', type=click.Path(), help='Path to params.yaml file')
 def run_neural_transfer(
         content_image_path: str,
         style_image_path: str,
-):
+        params: str,
+) -> None:
+    """
+    Runs neural style transfer based on provided content and style image.
+
+    Args:
+        content_image_path (str): Path to content image.
+        style_image_path (str): Path to style image.
+        params (str): Path to params.yaml file.
+
+    Returns:
+        None - Outputs generated.jpg image to images/* directory.
+    """
+    # LOAD PARAMS
+    with open(params, 'r') as fp:
+        params = yaml.safe_load(fp)
+
     # LOAD IMAGES
     print("Loading images...")
     images = {
@@ -23,29 +46,22 @@ def run_neural_transfer(
     }
 
     # PREPROCESS
-    mean = [0.485, 0.456, 0.406]
-    std = [0.229, 0.224, 0.225]
-    new_size = (256, 256)
+    mean = params.get('preprocess').get('mean')
+    std = params.get('preprocess').get('std')
+    resize = params.get('preprocess').get('resize')
 
     preprocess = Compose([
         ToTensor(),
-        Resize(size=new_size),
+        Resize(size=resize),
         Normalize(mean=mean, std=std),
         Lambda(lambda x: x.unsqueeze(0)),  # Add batch size
     ])
     images = {name: preprocess(image) for name, image in images.items()}
 
     # MODEL
-    content_layers = [
-        21   # conv4_2
-    ]
-    style_layers = [
-        0,   # conv1_1
-        5,   # conv2_1
-        10,  # conv3_1
-        19,  # conv4_1
-        28,  # conv5_1
-    ]
+    content_layers = params.get('vgg19').get('content_layers')
+    style_layers = params.get('vgg19').get('style_layers')
+
     model = VGG19(
         content_layers=content_layers,
         style_layers=style_layers,
@@ -58,13 +74,17 @@ def run_neural_transfer(
     images = {name: image.to(device) for name, image in images.items()}
 
     # LOSS FUNCTION
-    _, content_features, _ = model(images['content_image'])
-    _, _, style_features = model(images['style_image'])
+    with torch.no_grad():
+        _, content_features, _ = model(images['content_image'])
+        _, _, style_features = model(images['style_image'])
+
+    alpha = params.get('train').get('loss').get('alpha')
+    beta = params.get('train').get('loss').get('beta')
     loss_criterion = TotalLoss(
         content_features=content_features.values(),
         style_features=style_features.values(),
-        alpha=1.,
-        beta=1000
+        alpha=alpha,
+        beta=beta,
     )
 
     # OPTIMIZER
@@ -73,7 +93,7 @@ def run_neural_transfer(
     optimizer = optim.Adam(params=[images['input_image']])
 
     # FINAL RUN
-    iterations = 1000
+    iterations = params.get('train').get('iterations')
     for i in tqdm.tqdm(range(iterations)):
         # Forward pass
         _, content_features, style_features = model(images['input_image'])
@@ -92,7 +112,7 @@ def run_neural_transfer(
         if i % 50:
             print(f"Iteration: {i+1}, Loss: {loss.item()}")
 
-    # SAVE INPUT IMAGE
+    # SAVE GENERATED IMAGE
     postprocessing = Compose([
         Denormalize(mean=mean, std=std),
         Lambda(lambda x: x.squeeze(0)),  # Removes batch dim
@@ -105,7 +125,4 @@ def run_neural_transfer(
 
 
 if __name__ == '__main__':
-    run_neural_transfer(
-        content_image_path=IMAGE_DIR / 'dancing.jpg',
-        style_image_path=IMAGE_DIR / 'picasso.jpg'
-    )
+    run_neural_transfer()

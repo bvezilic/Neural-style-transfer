@@ -11,4 +11,5 @@ dependencies:
   - cudatoolkit=10.2
   - dvc
   - tqdm
+  - click
   - jupyterlab
