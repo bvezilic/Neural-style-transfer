@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import click
 import torch.cuda
 import torch.optim as optim
