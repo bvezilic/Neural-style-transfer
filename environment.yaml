@@ -1,0 +1,14 @@
+name: neural-style-transfer-env
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pytorch
+  - torchvision
+  - torchaudio
+  - cudatoolkit=10.2
+  - dvc
+  - tqdm
+  - jupyterlab
