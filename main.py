@@ -79,8 +79,8 @@ def run_neural_transfer(
     alpha = params.get('train').get('loss').get('alpha')
     beta = params.get('train').get('loss').get('beta')
     loss_criterion = TotalLoss(
-        content_features=content_features.values(),
-        style_features=style_features.values(),
+        content_features=content_features,
+        style_features=style_features,
         alpha=alpha,
         beta=beta,
     )
@@ -96,19 +96,19 @@ def run_neural_transfer(
         # Forward pass
         _, content_features, style_features = model(images['input_image'])
         # Compute loss
-        loss = loss_criterion(
-            input_content_features=content_features.values(),
-            input_style_features=style_features.values()
+        losses = loss_criterion(
+            input_content_features=content_features,
+            input_style_features=style_features
         )
         # Compute gradients
-        loss.backward()
+        losses['total_loss'].backward()
         # Update input image
         optimizer.step()
         # Clear gradients
         optimizer.zero_grad()
 
         if i % 50:
-            print(f"Iteration: {i+1}, Loss: {loss.item()}")
+            print(f"Iteration: {i + 1}, Loss: {losses['total_loss'].item()}")
 
     # SAVE GENERATED IMAGE
     postprocessing = Compose([

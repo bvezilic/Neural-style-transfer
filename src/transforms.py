@@ -50,7 +50,7 @@ def denormalize(tensor, mean, std, inplace=False):
     assert isinstance(tensor, torch.Tensor), f"Input tensor should be a torch tensor. Got {type(tensor)}"
     assert tensor.is_floating_point(), f"Input  tensor should be a float tensor. Get {tensor.dtype}"
     assert tensor.ndim >= 3, f"Expected tensor to be a tensor image of size (..., C, H, W), got " \
-                            f"tensor.size()={tensor.size()}"
+                             f"tensor.size()={tensor.size()}"
 
     if not inplace:
         tensor = tensor.clone()
@@ -66,4 +66,3 @@ def denormalize(tensor, mean, std, inplace=False):
 
     tensor.mul_(std).add_(mean)
     return tensor
-
