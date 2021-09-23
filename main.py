@@ -44,9 +44,9 @@ def run_neural_transfer(
     }
 
     # PREPROCESS
-    mean = params.get('preprocess').get('mean')
-    std = params.get('preprocess').get('std')
-    resize = params.get('preprocess').get('resize')
+    mean = params['preprocess'].get('mean')
+    std = params['preprocess'].get('std')
+    resize = params['preprocess'].get('resize')
 
     preprocess = Compose([
         ToTensor(),
@@ -57,8 +57,8 @@ def run_neural_transfer(
     images = {name: preprocess(image) for name, image in images.items()}
 
     # MODEL
-    content_layers = params.get('vgg19').get('content_layers')
-    style_layers = params.get('vgg19').get('style_layers')
+    content_layers = params['vgg19'].get('content_layers')
+    style_layers = params['vgg19'].get('style_layers')
 
     model = VGG19(
         content_layers=content_layers,
@@ -76,13 +76,16 @@ def run_neural_transfer(
         _, content_features, _ = model(images['content_image'])
         _, _, style_features = model(images['style_image'])
 
-    alpha = params.get('train').get('loss').get('alpha')
-    beta = params.get('train').get('loss').get('beta')
+    alpha = params['train']['loss'].get('alpha')
+    beta = params['train']['loss'].get('beta')
+    normalize_gram_matrix = params['train']['loss'].get('normalize_gram_matrix', False)
+
     loss_criterion = TotalLoss(
         content_features=content_features,
         style_features=style_features,
         alpha=alpha,
         beta=beta,
+        normalize_gram_matrix=normalize_gram_matrix
     )
 
     # OPTIMIZER
@@ -91,7 +94,8 @@ def run_neural_transfer(
     optimizer = optim.Adam(params=[images['input_image']])
 
     # FINAL RUN
-    iterations = params.get('train').get('iterations')
+    iterations = params['train'].get('iterations')
+    all_losses = {'losses': []}
     for i in tqdm.tqdm(range(iterations)):
         # Forward pass
         _, content_features, style_features = model(images['input_image'])
@@ -106,6 +110,14 @@ def run_neural_transfer(
         optimizer.step()
         # Clear gradients
         optimizer.zero_grad()
+
+        # Log losses
+        # Convert tensor to floats
+        for k, v in losses.items():
+            if isinstance(v, torch.Tensor):
+                losses[k] = v.item()
+
+        all_losses['losses'].append(losses)
 
         if i % 50:
             print(f"Iteration: {i + 1}, Loss: {losses['total_loss'].item()}")
