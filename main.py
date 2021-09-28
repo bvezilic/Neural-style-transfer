@@ -91,36 +91,46 @@ def run_neural_transfer(
     # OPTIMIZER
     images['input_image'].requires_grad_(True)
     model.requires_grad_(False)
-    optimizer = optim.Adam(params=[images['input_image']])
+    optimizer = optim.LBFGS(params=[images['input_image']])
 
     # FINAL RUN
     iterations = params['train'].get('iterations')
     all_losses = {'losses': []}
     for i in tqdm.tqdm(range(iterations)):
-        # Forward pass
-        _, content_features, style_features = model(images['input_image'])
-        # Compute loss
-        losses = loss_criterion(
-            input_content_features=content_features,
-            input_style_features=style_features
-        )
-        # Compute gradients
-        losses['total_loss'].backward()
-        # Update input image
-        optimizer.step()
-        # Clear gradients
-        optimizer.zero_grad()
 
-        # Log losses
-        # Convert tensor to floats
-        for k, v in losses.items():
-            if isinstance(v, torch.Tensor):
-                losses[k] = v.item()
+        def closure():
+            # Clear gradients
+            optimizer.zero_grad()
 
-        all_losses['losses'].append(losses)
+            # Forward pass
+            _, content_features, style_features = model(images['input_image'])
 
-        if i % 50:
-            print(f"Iteration: {i + 1}, Loss: {losses['total_loss'].item()}")
+            # Compute loss
+            losses = loss_criterion(
+                input_content_features=content_features,
+                input_style_features=style_features
+            )
+            total_loss = losses['total_loss']
+
+            # Compute gradients
+            total_loss.backward()
+
+            # Log losses
+            all_losses['losses'].append(losses)
+
+            if i % 50:
+                print(f"Iteration: {i + 1}, Loss: {total_loss}")
+
+            return total_loss
+
+        optimizer.step(closure=closure)
+
+    # Log all losses to file
+
+    # Convert tensor to floats
+    for k, v in all_losses.items():
+        if isinstance(v, torch.Tensor):
+            all_losses[k] = v.item()
 
     # SAVE GENERATED IMAGE
     postprocessing = Compose([
