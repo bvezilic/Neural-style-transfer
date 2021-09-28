@@ -36,7 +36,9 @@ def run_neural_transfer(
         params = yaml.safe_load(fp)
 
     # LOAD IMAGES
-    print("Loading images...")
+    print(f"Loading images...\n"
+          f"Content image: {content_image_path}\n"
+          f"Style image: {style_image_path}\n")
     images = {
         'content_image': Image.open(content_image_path),
         'style_image': Image.open(style_image_path),
@@ -118,15 +120,12 @@ def run_neural_transfer(
             # Log losses
             all_losses['losses'].append(losses)
 
-            if i % 50:
-                print(f"Iteration: {i + 1}, Loss: {total_loss}")
-
             return total_loss
 
         optimizer.step(closure=closure)
+        print(f"Iteration: {i * optimizer.defaults['max_iter']}, Loss: {all_losses['losses'][-1]['total_loss'].item()}")
 
     # Log all losses to file
-
     # Convert tensor to floats
     for k, v in all_losses.items():
         if isinstance(v, torch.Tensor):
