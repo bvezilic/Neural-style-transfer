@@ -19,7 +19,8 @@ class TotalLoss(nn.Module):
         self.normalize_gram_matrix = normalize_gram_matrix
 
         self.content_losses = {layer_idx: ContentLoss(feature) for layer_idx, feature in content_features.items()}
-        self.style_losses = {layer_idx: StyleLoss(feature) for layer_idx, feature in style_features.items()}
+        self.style_losses = {layer_idx: StyleLoss(feature, normalize_gram_matrix=self.normalize_gram_matrix)
+                             for layer_idx, feature in style_features.items()}
 
     def forward(self, input_content_features: Dict[int, Tensor], input_style_features: Dict[int, Tensor]) \
             -> Dict[str, Union[float, Tensor]]:
