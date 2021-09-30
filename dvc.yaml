@@ -1,0 +1,7 @@
+stages:
+  download:
+    cmd: python -m src.download -t ./images
+    deps:
+    - ./src/download.py
+    outs:
+    - ./images

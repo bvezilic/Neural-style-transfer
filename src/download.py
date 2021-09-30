@@ -22,6 +22,10 @@ def download_images(target_dir: str) -> None:
     target_dir = Path(target_dir)
     print(f"Target (save) directory set to: {target_dir}")
 
+    if not target_dir.exists():
+        print("Target directory doesn't existing. Creating folder structure.")
+        target_dir.mkdir(exist_ok=True, parents=True)
+
     for name, url in content_images_url.items():
         print(f"Downloading image `{name}` on URL: {url}")
         response = requests.get(url)

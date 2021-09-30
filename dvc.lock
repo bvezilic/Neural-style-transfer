@@ -1,0 +1,13 @@
+schema: '2.0'
+stages:
+  download:
+    cmd: python -m src.download -t ./images
+    deps:
+    - path: ./src/download.py
+      md5: 2dceff519b15d89f065b81303c54fb0d
+      size: 2317
+    outs:
+    - path: ./images
+      md5: 11cc52bd813e78939a0393a55a668d20.dir
+      size: 11442
+      nfiles: 6
