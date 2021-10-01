@@ -8,6 +8,54 @@ stages:
       size: 2317
     outs:
     - path: ./images
-      md5: 11cc52bd813e78939a0393a55a668d20.dir
-      size: 11442
+      md5: 40a33feba8e49f7f1da4d1d99ccf4291.dir
+      size: 282016
       nfiles: 6
+  run_style_transfer@The_Scream.jpg:
+    cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront_Andreas_Praefcke.jpg
+      -style ./images/The_Scream.jpg -o ./results/generated_The_Scream.jpg
+    deps:
+    - path: ./images
+      md5: 63a0c33915fd9f1050c9919cc1924330.dir
+      size: 379517
+      nfiles: 6
+    - path: ./src/losses.py
+      md5: 18ef3182c0c56719c969443da2a0ca75
+      size: 3878
+    - path: ./src/model.py
+      md5: 9c1911dd7b3a2ab29eae60ed775586d4
+      size: 2032
+    - path: ./src/run_style_transfer.py
+      md5: 3eb2ca1273275dbc83e7ce453b6a0394
+      size: 5155
+    - path: ./src/transforms.py
+      md5: a940905c193697b24de3c623f8131088
+      size: 2546
+    outs:
+    - path: ./results/generated_The_Scream.jpg
+      md5: 1012567895d38ae36b53677a18528828
+      size: 17562
+  run_style_transfer@Starry_Night_Van_Gogh.jpg:
+    cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront_Andreas_Praefcke.jpg
+      -style ./images/Starry_Night_Van_Gogh.jpg -o ./results/generated_Starry_Night_Van_Gogh.jpg
+    deps:
+    - path: ./images
+      md5: 63a0c33915fd9f1050c9919cc1924330.dir
+      size: 379517
+      nfiles: 6
+    - path: ./src/losses.py
+      md5: 18ef3182c0c56719c969443da2a0ca75
+      size: 3878
+    - path: ./src/model.py
+      md5: 9c1911dd7b3a2ab29eae60ed775586d4
+      size: 2032
+    - path: ./src/run_style_transfer.py
+      md5: 3eb2ca1273275dbc83e7ce453b6a0394
+      size: 5155
+    - path: ./src/transforms.py
+      md5: a940905c193697b24de3c623f8131088
+      size: 2546
+    outs:
+    - path: ./results/generated_Starry_Night_Van_Gogh.jpg
+      md5: 7ce36e70044620ab2082e2c63a3d4f5d
+      size: 23418
