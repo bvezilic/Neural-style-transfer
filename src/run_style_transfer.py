@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import click
 import torch.cuda
 import torch.optim as optim
@@ -12,12 +14,18 @@ from src.transforms import Denormalize
 
 
 @click.command()
-@click.option('-content', '--content_image_path', type=click.Path(), help='Path to content image')
-@click.option('-style', '--style_image_path', type=click.Path(), help='Path to content image')
-@click.option('-p', '--params', type=click.Path(), help='Path to params.yaml file')
+@click.option('-p', '--params', type=click.Path(),
+              help='Path to params.yaml file')
+@click.option('-content', '--content_image_path', type=click.Path(),
+              help='Path to content image. Overrides params.yaml')
+@click.option('-style', '--style_image_path', type=click.Path(),
+              help='Path to content image. Overrides params.yaml')
+@click.option('-o', '--output_image_path', type=click.Path(),
+              help='Path to content image. Overrides params.yaml')
 def run_neural_transfer(
         content_image_path: str,
         style_image_path: str,
+        output_image_path: str,
         params: str,
 ) -> None:
     """
@@ -26,10 +34,11 @@ def run_neural_transfer(
     Args:
         content_image_path (str): Path to content image.
         style_image_path (str): Path to style image.
+        output_image_path (str): Save location of generated image.
         params (str): Path to params.yaml file.
 
     Returns:
-        None - Outputs generated.jpg image to images/* directory.
+        None - Outputs generated image to `output_image_path`.
     """
     # LOAD PARAMS
     with open(params, 'r') as fp:
@@ -139,8 +148,10 @@ def run_neural_transfer(
         ToPILImage()
     ])
 
+    save_path = Path(output_image_path)
+    save_path.parent.mkdir(parents=True, exist_ok=True)
     final_image = postprocessing(images['input_image'])
-    final_image.save('images/generated.jpg')
+    final_image.save(save_path)
 
 
 if __name__ == '__main__':
