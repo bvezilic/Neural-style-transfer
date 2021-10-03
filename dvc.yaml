@@ -1,21 +1,15 @@
 stages:
-  download:
-    cmd: python -m src.download -t ./images
-    deps:
-      - ./src/download.py
-    outs:
-      - ./images
   run_style_transfer:
     foreach:
       - The_Scream.jpg
-      - Starry_Night_Van_Gogh.jpg
+      - Van_Gogh_Starry_Night.jpg
       - Shipwreck_of_the_Minotaur_William_Turner.jpg
-      - Femme_nue_assise_Picasso.jpg
-      - Composition_7_Vassily_Kandinsky.jpg
+      - Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
+      - Vassily_Kandinsky_Composition_7.jpg
     do:
       cmd: python -m src.run_style_transfer
         -p ./params.yaml
-        -content ./images/Tuebingen_Neckarfront_Andreas_Praefcke.jpg
+        -content ./images/Tuebingen_Neckarfront.jpg
         -style ./images/${item}
         -o ./results/generated_${item}
       deps:
