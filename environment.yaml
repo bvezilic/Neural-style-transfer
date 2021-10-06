@@ -10,7 +10,6 @@ dependencies:
   - torchaudio
   - cudatoolkit=10.2
   - dvc
-  - dvc-gdrive
   - tqdm
   - click
   - jupyterlab
