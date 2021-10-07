@@ -41,14 +41,39 @@ class VGG19(nn.Module):
         return hook
 
     def clear_features(self) -> None:
+        """
+        Clears stored features (outputs of conv layers) from hooks.
+        """
         self.content_features = OrderedDict({})
         self.style_features = OrderedDict({})
 
     @staticmethod
     def clone_features(features: Dict[int, Tensor]) -> Dict[int, Tensor]:
+        """
+        Clones all tensors in dictionary.
+
+        Args:
+            features (dict): Dictionary of tensors with string keys.
+
+        Returns:
+            New dictionary with cloned tensors.
+        """
         return {idx: feature.clone() for idx, feature in features.items()}
 
     def forward(self, input_image: Tensor) -> (Tensor, Dict[int, Tensor], Dict[int, Tensor]):
+        """
+        Runs forward pass through pretrained vgg19.
+
+        Args:
+            input_image (Tensor): Normalized image of shape (B, C, H, W)
+
+        Returns:
+            Outputs of conv layers picked up by hooks.
+
+            x (Tensor):
+            content_features (dict):
+            style_features (dict):
+        """
         x = self.pretrained_vgg19(input_image)
 
         content_features = self.clone_features(self.content_features)
