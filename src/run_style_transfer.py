@@ -38,7 +38,7 @@ def run_neural_transfer(
         params (str): Path to params.yaml file.
 
     Returns:
-        None - Outputs generated image to `output_image_path`.
+        None: Outputs generated image to `output_image_path`.
     """
     # LOAD PARAMS
     with open(params, 'r') as fp:
@@ -68,12 +68,12 @@ def run_neural_transfer(
     images = {name: preprocess(image) for name, image in images.items()}
 
     # MODEL
-    content_layers = params['vgg19'].get('content_layers')
-    style_layers = params['vgg19'].get('style_layers')
+    content_layers_ids = params['vgg19'].get('content_layers_ids')
+    style_layers_ids = params['vgg19'].get('style_layers_ids')
 
     model = VGG19(
-        content_layers=content_layers,
-        style_layers=style_layers,
+        content_layers_ids=content_layers_ids,
+        style_layers_ids=style_layers_ids,
     )
     print(model)
 
