@@ -12,8 +12,10 @@ class TotalLoss:
     ``total_loss = alpha * content_loss + beta * style_loss``
 
     Args:
-        content_features (dict):
-        style_features (dict):
+        content_features (dict): Dictionary where key is layer index in vgg19 and value is feature maps obtained at that
+                                 index for content image.
+        style_features (dict): Dictionary where key is layer index in vgg19 and value is feature maps obtained at that
+                               index for style image.
         alpha (float): Coefficient for content loss.
         beta (float): Coefficient for style loss.
         normalize_gram_matrix (bool): Default to True.
@@ -37,7 +39,18 @@ class TotalLoss:
 
     def __call__(self, input_content_features: Dict[int, Tensor], input_style_features: Dict[int, Tensor]) \
             -> Dict[str, Union[float, Tensor]]:
+        """
+        Computes total loss for generated image.
 
+        Args:
+            input_content_features (dict): Dictionary where key is layer index in vgg19 and value is feature maps
+                                           obtained at that index for generated image.
+            input_style_features (dict): Dictionary where key is layer index in vgg19 and value is feature maps obtained
+                                         at that index for generated image.
+
+        Returns:
+            Tensor: Sum of weighted style and content loss
+        """
         assert len(self.content_losses) == len(input_content_features), \
             f"Mismatched lengths of content features: Expected {len(self.content_losses)} got {len(input_content_features)}"
         assert len(self.style_losses) == len(input_style_features), \
@@ -73,17 +86,40 @@ class TotalLoss:
 
 
 class ContentLoss:
+    """
+    Computes content loss for one (conv) layer.
+
+    Args:
+        content_feature (Tensor): Feature map from i-th conv layer of content image.
+    """
+
     def __init__(self, content_feature: Tensor):
         super(ContentLoss, self).__init__()
 
         self.mse = nn.MSELoss()
         self.content_feature = content_feature.detach()
 
-    def __call__(self, input_features: Tensor) -> Tensor:
-        return self.mse(input_features, self.content_feature)
+    def __call__(self, input_feature: Tensor) -> Tensor:
+        """
+        Computes mean-squared error between outputs of i-th layer from content image and generated image.
+
+        Args:
+            input_feature (Tensor): Feature maps from i-th conv layer of generated image.
+
+        Returns:
+            Tensor: Mean-squared error/loss
+        """
+        return self.mse(input_feature, self.content_feature)
 
 
 class StyleLoss:
+    """
+    Computes style loss for one (conv) layer.
+
+    Args:
+        style_feature (Tensor): Feature maps from i-th conv layer of style image.
+    """
+
     def __init__(self, style_feature: Tensor, normalize_gram_matrix=False):
         super(StyleLoss, self).__init__()
 
@@ -92,11 +128,34 @@ class StyleLoss:
         self.style_gram = gram_matrix(style_feature.detach(), normalize=self.normalize_gram_matrix)
 
     def __call__(self, input_feature: Tensor) -> Tensor:
+        """
+        Computes mean-squared error between:
+
+        `style_feature`: Gram matrix of feature maps from i-th conv layer of style image
+        and
+        `input_feature`: Gram matrix of feature maps from i-th conv layer of generated image
+
+        Args:
+            input_feature: Feature maps from i-th conv layer of generated image.
+
+        Returns:
+            Tensor: Mean-squared error/loss
+        """
         input_gram = gram_matrix(input_feature, normalize=self.normalize_gram_matrix)
         return self.mse(input_gram, self.style_gram)
 
 
 def gram_matrix(feature_maps: Tensor, normalize: bool = False) -> Tensor:
+    """
+    Computes Gram matrix as inner product of feature maps (F) as F * F^T.
+
+    Args:
+        feature_maps (Tensor): Output tensor from conv layer of shape (B=batch, C=channel, H=height, W=width)
+        normalize (bool): Normalize Gram matrix by its number of elements.
+
+    Returns:
+        Tensor: Gram matrix
+    """
     B, C, H, W = feature_maps.size()
 
     assert B == 1, f"Batch size must be 1! Got B={B}"
