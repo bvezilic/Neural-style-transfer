@@ -3,8 +3,8 @@ preprocess:
   std: [0.229, 0.224, 0.225]
   resize: [256, 256]
 vgg19:
-  content_layers: [21]
-  style_layers: [0, 5, 10, 19, 28]
+  content_layers_ids: [ 21 ]
+  style_layers_ids: [ 0, 5, 10, 19, 28 ]
 train:
   loss:
     alpha: 1.
