@@ -5,24 +5,37 @@ import torch.nn as nn
 from torch import Tensor
 
 
-class TotalLoss(nn.Module):
-    def __init__(self,
-                 content_features: Dict[int, Tensor],
-                 style_features: Dict[int, Tensor],
-                 alpha: float = 1.,
-                 beta: float = 1000.,
-                 normalize_gram_matrix: bool = True):
+class TotalLoss:
+    """
+    Computes total loss as described in paper: https://arxiv.org/abs/1508.06576
+
+    ``total_loss = alpha * content_loss + beta * style_loss``
+
+    Args:
+        content_features (dict):
+        style_features (dict):
+        alpha (float): Coefficient for content loss.
+        beta (float): Coefficient for style loss.
+        normalize_gram_matrix (bool): Default to True.
+    """
+
+    def __init__(self, content_features: Dict[int, Tensor], style_features: Dict[int, Tensor], alpha: float = 1.,
+                 beta: float = 1000., normalize_gram_matrix: bool = True):
         super(TotalLoss, self).__init__()
 
         self.alpha = alpha
         self.beta = beta
         self.normalize_gram_matrix = normalize_gram_matrix
 
-        self.content_losses = {layer_idx: ContentLoss(feature) for layer_idx, feature in content_features.items()}
-        self.style_losses = {layer_idx: StyleLoss(feature, normalize_gram_matrix=self.normalize_gram_matrix)
-                             for layer_idx, feature in style_features.items()}
+        self.content_losses = {
+            layer_idx: ContentLoss(feature) for layer_idx, feature in content_features.items()
+        }
+        self.style_losses = {
+            layer_idx: StyleLoss(feature, normalize_gram_matrix=self.normalize_gram_matrix)
+            for layer_idx, feature in style_features.items()
+        }
 
-    def forward(self, input_content_features: Dict[int, Tensor], input_style_features: Dict[int, Tensor]) \
+    def __call__(self, input_content_features: Dict[int, Tensor], input_style_features: Dict[int, Tensor]) \
             -> Dict[str, Union[float, Tensor]]:
 
         assert len(self.content_losses) == len(input_content_features), \
@@ -59,26 +72,26 @@ class TotalLoss(nn.Module):
         return losses
 
 
-class ContentLoss(nn.Module):
+class ContentLoss:
     def __init__(self, content_feature: Tensor):
         super(ContentLoss, self).__init__()
 
         self.mse = nn.MSELoss()
-        self.register_buffer('content_feature', content_feature.detach())
+        self.content_feature = content_feature.detach()
 
-    def forward(self, input_features: Tensor) -> Tensor:
+    def __call__(self, input_features: Tensor) -> Tensor:
         return self.mse(input_features, self.content_feature)
 
 
-class StyleLoss(nn.Module):
+class StyleLoss:
     def __init__(self, style_feature: Tensor, normalize_gram_matrix=False):
         super(StyleLoss, self).__init__()
 
         self.normalize_gram_matrix = normalize_gram_matrix
         self.mse = nn.MSELoss()
-        self.register_buffer('style_gram', gram_matrix(style_feature.detach(), normalize=self.normalize_gram_matrix))
+        self.style_gram = gram_matrix(style_feature.detach(), normalize=self.normalize_gram_matrix)
 
-    def forward(self, input_feature: Tensor) -> Tensor:
+    def __call__(self, input_feature: Tensor) -> Tensor:
         input_gram = gram_matrix(input_feature, normalize=self.normalize_gram_matrix)
         return self.mse(input_gram, self.style_gram)
 
