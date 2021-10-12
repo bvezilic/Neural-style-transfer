@@ -17,11 +17,7 @@ class VGG19(nn.Module):
         style_layers_ids (list): List of layer ids from which to extract output
     """
 
-    def __init__(
-            self,
-            content_layers_ids: List[int],
-            style_layers_ids: List[int]
-    ):
+    def __init__(self, content_layers_ids: List[int], style_layers_ids: List[int]):
         super(VGG19, self).__init__()
 
         self.pretrained_vgg19 = models.vgg19(pretrained=True).features
