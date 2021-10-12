@@ -75,7 +75,6 @@ def run_neural_transfer(
         content_layers_ids=content_layers_ids,
         style_layers_ids=style_layers_ids,
     )
-    print(model)
 
     # DEVICE SETUP
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -152,6 +151,7 @@ def run_neural_transfer(
     save_path.parent.mkdir(parents=True, exist_ok=True)
     final_image = postprocessing(images['input_image'])
     final_image.save(save_path)
+    print(f"Generated image saved to '{save_path}'")
 
 
 if __name__ == '__main__':
