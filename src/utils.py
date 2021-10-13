@@ -1,4 +1,6 @@
-from typing import Dict
+import json
+from pathlib import Path
+from typing import Dict, Union
 
 import torch
 
@@ -14,3 +16,30 @@ def clone_tensors(tensors: Dict[int, torch.Tensor]) -> Dict[int, torch.Tensor]:
         New dictionary with cloned tensors.
     """
     return {idx: tensor.clone() for idx, tensor in tensors.items()}
+
+
+def tensors_to_float(tensors: Dict[str, torch.Tensor]) -> Dict[str, float]:
+    """
+    Converts all tensors in dictionary to float values.
+
+    Args:
+        tensors (dict): Dictionary of tensors with single value.
+
+    Returns:
+        dict
+    """
+    assert isinstance(tensors, dict), f"Input argument must be dict! Found {type(tensors)}"
+
+    losses_ = {}
+    for k, v in tensors.items():
+        if isinstance(v, torch.Tensor):
+            losses_[k] = v.item()
+        else:
+            losses_[k] = v
+
+    return losses_
+
+
+def save_json(obj: Dict, filepath: Union[str, Path]) -> None:
+    with open(filepath, 'w') as fp:
+        json.dump(obj, fp)

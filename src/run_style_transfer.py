@@ -11,6 +11,7 @@ from torchvision.transforms import Compose, Normalize, Resize, ToTensor, Lambda,
 from src.losses import TotalLoss
 from src.model import VGG19
 from src.transforms import Denormalize
+from src.utils import tensors_to_float, save_json
 
 
 @click.command()
@@ -126,18 +127,16 @@ def run_neural_transfer(
             total_loss.backward()
 
             # Log losses
-            all_losses['losses'].append(losses)
+            log_losses = tensors_to_float(losses)
+            all_losses['losses'].append(log_losses)
 
             return total_loss
 
         optimizer.step(closure=closure)
-        print(f"Iteration: {i * optimizer.defaults['max_iter']}, Loss: {all_losses['losses'][-1]['total_loss'].item()}")
+        print(f"Iteration: {i * optimizer.defaults['max_iter']}, Loss: {all_losses['losses'][-1]['total_loss']}")
 
-    # Log all losses to file
-    # Convert tensor to floats
-    for k, v in all_losses.items():
-        if isinstance(v, torch.Tensor):
-            all_losses[k] = v.item()
+    # Log all losses to json
+    save_json(all_losses, 'losses.json')
 
     # SAVE GENERATED IMAGE
     postprocessing = Compose([
