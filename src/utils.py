@@ -41,5 +41,15 @@ def tensors_to_float(tensors: Dict[str, torch.Tensor]) -> Dict[str, float]:
 
 
 def save_json(obj: Dict, filepath: Union[str, Path]) -> None:
+    """
+    Saves dict object to given path.
+
+    Args:
+        obj (dict): Object to serialize as json.
+        filepath (str or Path): Save location for json file.
+
+    Returns:
+
+    """
     with open(filepath, 'w') as fp:
         json.dump(obj, fp)
