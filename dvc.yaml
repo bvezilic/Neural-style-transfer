@@ -18,5 +18,9 @@ stages:
         - ./src/model.py
         - ./src/transforms.py
         - ./images
+      params:
+        - train.loss.beta
+        - train.loss.normalize_gram_matrix
+        - train.loss.iterations
       outs:
         - ./results/generated_${item}
