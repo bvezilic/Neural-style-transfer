@@ -20,7 +20,7 @@ def clone_tensors(tensors: Dict[int, torch.Tensor]) -> Dict[int, torch.Tensor]:
 
 def tensors_to_float(tensors: Dict[str, torch.Tensor]) -> Dict[str, float]:
     """
-    Converts all tensors in dictionary to float values.
+    Converts all single-value tensors in dictionary to float values.
 
     Args:
         tensors (dict): Dictionary of tensors with single value.
@@ -30,14 +30,14 @@ def tensors_to_float(tensors: Dict[str, torch.Tensor]) -> Dict[str, float]:
     """
     assert isinstance(tensors, dict), f"Input argument must be dict! Found {type(tensors)}"
 
-    losses_ = {}
+    converted = {}
     for k, v in tensors.items():
         if isinstance(v, torch.Tensor):
-            losses_[k] = v.item()
+            converted[k] = v.item()
         else:
-            losses_[k] = v
+            converted[k] = v
 
-    return losses_
+    return converted
 
 
 def save_json(obj: Dict, filepath: Union[str, Path]) -> None:
@@ -49,7 +49,7 @@ def save_json(obj: Dict, filepath: Union[str, Path]) -> None:
         filepath (str or Path): Save location for json file.
 
     Returns:
-
+        None: Saves object to json file.
     """
     with open(filepath, 'w') as fp:
         json.dump(obj, fp)
