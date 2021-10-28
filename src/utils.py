@@ -20,7 +20,7 @@ def clone_tensors(tensors: Dict[int, torch.Tensor]) -> Dict[int, torch.Tensor]:
 
 def tensors_to_float(tensors: Dict[str, torch.Tensor]) -> Dict[str, float]:
     """
-    Converts all tensors in dictionary to float values.
+    Converts all single-value tensors in dictionary to float values.
 
     Args:
         tensors (dict): Dictionary of tensors with single value.
