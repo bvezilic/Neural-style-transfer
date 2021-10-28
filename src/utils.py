@@ -30,14 +30,14 @@ def tensors_to_float(tensors: Dict[str, torch.Tensor]) -> Dict[str, float]:
     """
     assert isinstance(tensors, dict), f"Input argument must be dict! Found {type(tensors)}"
 
-    losses_ = {}
+    output = {}
     for k, v in tensors.items():
         if isinstance(v, torch.Tensor):
-            losses_[k] = v.item()
+            output[k] = v.item()
         else:
-            losses_[k] = v
+            output[k] = v
 
-    return losses_
+    return output
 
 
 def save_json(obj: Dict, filepath: Union[str, Path]) -> None:
@@ -49,7 +49,7 @@ def save_json(obj: Dict, filepath: Union[str, Path]) -> None:
         filepath (str or Path): Save location for json file.
 
     Returns:
-
+        None
     """
     with open(filepath, 'w') as fp:
         json.dump(obj, fp)
