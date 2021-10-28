@@ -18,15 +18,18 @@ from src.utils import tensors_to_float, save_json
 @click.option('-p', '--params', type=click.Path(),
               help='Path to params.yaml file')
 @click.option('-content', '--content_image_path', type=click.Path(),
-              help='Path to content image. Overrides params.yaml')
+              help='Path to content image.')
 @click.option('-style', '--style_image_path', type=click.Path(),
-              help='Path to content image. Overrides params.yaml')
+              help='Path to style image.')
 @click.option('-o', '--output_image_path', type=click.Path(),
-              help='Path to content image. Overrides params.yaml')
+              help='Path to output (generated) image.')
+@click.option('-l', '--losses_path', type=click.Path(),
+              help='Path to losses.json file.')
 def run_neural_transfer(
         content_image_path: str,
         style_image_path: str,
         output_image_path: str,
+        losses_path: str,
         params: str,
 ) -> None:
     """
@@ -36,6 +39,7 @@ def run_neural_transfer(
         content_image_path (str): Path to content image.
         style_image_path (str): Path to style image.
         output_image_path (str): Save location of generated image.
+        losses_path (str): Save location for losses.json file.
         params (str): Path to params.yaml file.
 
     Returns:
@@ -136,7 +140,7 @@ def run_neural_transfer(
         print(f"Iteration: {i * optimizer.defaults['max_iter']}, Loss: {all_losses['losses'][-1]['total_loss']}")
 
     # Log all losses to json
-    save_json(all_losses, 'losses.json')
+    save_json(all_losses, losses_path)
 
     # SAVE GENERATED IMAGE
     postprocessing = Compose([
