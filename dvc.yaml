@@ -12,6 +12,7 @@ stages:
         -content ./images/Tuebingen_Neckarfront.jpg
         -style ./images/${item}
         -o ./results/generated_${item}
+        -l ./results/losses_${item}.json
       deps:
         - ./src/run_style_transfer.py
         - ./src/losses.py
@@ -24,3 +25,6 @@ stages:
         - trian.iterations
       outs:
         - ./results/generated_${item}
+      plots:
+        - ./results/losses_${item}.json:
+            cache: false
