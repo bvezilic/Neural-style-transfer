@@ -142,17 +142,18 @@ def run_neural_transfer(
     # Log all losses to json
     save_json(all_losses, losses_path)
 
-    # SAVE GENERATED IMAGE
+    # POSTPROCESSING
     postprocessing = Compose([
         Denormalize(mean=mean, std=std),
         Lambda(lambda x: x.squeeze(0)),  # Removes batch dim
         Lambda(lambda x: x.clamp(0, 1)),
         ToPILImage()
     ])
+    final_image = postprocessing(images['input_image'])  # final_image: PIL.Image
 
+    # SAVE GENERATED IMAGE
     save_path = Path(output_image_path)
     save_path.parent.mkdir(parents=True, exist_ok=True)
-    final_image = postprocessing(images['input_image'])
     final_image.save(save_path)
     print(f"Generated image saved to '{save_path}'")
 
