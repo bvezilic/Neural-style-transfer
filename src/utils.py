@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import Dict, Union, List
 
 import PIL
-import torch
 import matplotlib.pyplot as plt
+import torch
 
 
 def clone_tensors(tensors: Dict[int, torch.Tensor]) -> Dict[int, torch.Tensor]:

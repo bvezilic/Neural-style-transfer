@@ -112,7 +112,6 @@ def run_neural_transfer(
     iterations = params['train'].get('iterations')
     all_losses = {'losses': []}
     for i in tqdm.tqdm(range(iterations)):
-
         def closure():
             # Clear gradients
             optimizer.zero_grad()
