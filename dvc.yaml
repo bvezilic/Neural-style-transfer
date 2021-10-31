@@ -22,7 +22,7 @@ stages:
       params:
         - train.loss.beta
         - train.loss.normalize_gram_matrix
-        - trian.iterations
+        - train.iterations
       outs:
         - ./results/generated_${item}
       plots:
