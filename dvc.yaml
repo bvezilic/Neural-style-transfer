@@ -28,3 +28,22 @@ stages:
       plots:
         - ./results/losses_${item}.json:
             cache: false
+  plot_result_images:
+    cmd: python -m src.plot_images
+      -i ./results/generated_The_Scream.jpg
+      -i ./results/generated_Van_Gogh_Starry_Night.jpg
+      -i ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg
+      -i ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
+      -i ./results/generated_Vassily_Kandinsky_Composition_7.jpg
+      -o ./results/style_transfer_results.jpg
+      -t "Neural style transfer results"
+    deps:
+      - ./src/plot_images.py
+      - ./results/generated_The_Scream.jpg
+      - ./results/generated_Van_Gogh_Starry_Night.jpg
+      - ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg
+      - ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
+      - ./results/generated_Vassily_Kandinsky_Composition_7.jpg
+    outs:
+      - ./results/style_transfer_results.jpg:
+          cache: false

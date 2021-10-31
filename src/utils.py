@@ -1,8 +1,10 @@
 import json
 from pathlib import Path
-from typing import Dict, Union
+from typing import Dict, Union, List
 
+import PIL
 import torch
+import matplotlib.pyplot as plt
 
 
 def clone_tensors(tensors: Dict[int, torch.Tensor]) -> Dict[int, torch.Tensor]:
@@ -53,3 +55,25 @@ def save_json(obj: Dict, filepath: Union[str, Path]) -> None:
     """
     with open(filepath, 'w') as fp:
         json.dump(obj, fp)
+
+
+def plot_images(images: List[PIL.Image.Image], title: str) -> plt.Figure:
+    """
+    Plots list of images in a single row (grid). Figure size by default is set to (16,4).
+
+    Args:
+        images (list): List of images to plot in a grid.
+        title (str): Name of plot.
+
+    Returns:
+        Figure: Matplotlib figure (for serialization)
+    """
+    n_images = len(images)
+    fig, axs = plt.subplots(nrows=1, ncols=n_images, figsize=(16, 4))
+    fig.suptitle(title, fontsize=16)
+    fig.tight_layout()
+
+    for img, ax in zip(images, axs):
+        ax.imshow(img)
+
+    return fig
