@@ -1,4 +1,5 @@
 # Neural-style-transfer
+
 PyTorch's implementation of Neural Style Transfer. Learning repository with several experiments and playing around.
 
 ## Quick overview
@@ -11,12 +12,15 @@ Summary of experiments are given below. All experiments will be on their respect
 
 ### Gram matrix normalization
 
-Some of the online resources didn't take gram matrix normalization into consideration, not even paper mentions it. However, pytorch tutorial says it's really important, so let's compare the results.
+Some of the online resources didn't take gram matrix normalization into consideration, not even paper mentions it.
+However, pytorch tutorial says it's really important, so let's compare the results.
 
 ### Low losses in later layers
 
-I've noticed in experiments that style losses in later layers are really low. Could it be that the reason for that is that I am using content image as starting point for generation?
+I've noticed in experiments that style losses in later layers are really low. Could it be that the reason for that is
+that I am using content image as starting point for generation?
 
 ### Adam vs LBFGS optimizer
 
-Some are using Adam (probably due to simplicity), others say that LBFGS produces much better results, so let's compare them.
+Some are using Adam (probably due to simplicity), others say that LBFGS produces much better results, so let's compare
+them.
