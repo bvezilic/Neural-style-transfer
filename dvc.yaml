@@ -36,7 +36,7 @@ stages:
       -i ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
       -i ./results/generated_Vassily_Kandinsky_Composition_7.jpg
       -o ./results/style_transfer_results.jpg
-      -t "Neural style transfer results"
+      -t "${plots.title}"
     deps:
       - ./src/plot_images.py
       - ./results/generated_The_Scream.jpg
