@@ -23,7 +23,7 @@ train:
   loss:
     alpha: 1.
     beta: 1000.
-    normalize_gram_matrix: true
+    normalize_gram_matrix: false
   iterations: 10
 plots:
-  title: Gram matrix normalization=True
+  title: Gram matrix normalization=False
