@@ -24,6 +24,6 @@ train:
     alpha: 1.
     beta: 1000.
     normalize_gram_matrix: true
-  iterations: 20
+  iterations: 5
 plots:
-  title: Iterations=20
+  title: Iterations=5
