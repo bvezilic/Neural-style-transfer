@@ -22,8 +22,8 @@ vgg19:
 train:
   loss:
     alpha: 1.
-    beta: 10000.0
+    beta: 10.0
     normalize_gram_matrix: true
   iterations: 10
 plots:
-  title: beta=10000.
+  title: beta=10.
