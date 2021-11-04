@@ -22,8 +22,8 @@ vgg19:
 train:
   loss:
     alpha: 1.
-    beta: 1000.
-    normalize_gram_matrix: True
+    beta: 100.0
+    normalize_gram_matrix: true
   iterations: 10
 plots:
-  title: "Neural style transfer results"
+  title: beta=100.
