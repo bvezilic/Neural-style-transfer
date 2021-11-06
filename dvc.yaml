@@ -11,6 +11,7 @@ stages:
         -p ./params.yaml
         -content ./images/Tuebingen_Neckarfront.jpg
         -style ./images/${item}
+        -ig ${train.init_generated}
         -o ./results/generated_${item}
         -l ./results/losses_${item}.json
       deps:

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import click
+import numpy as np
 import torch.cuda
 import torch.optim as optim
 import tqdm
@@ -21,26 +22,30 @@ from src.utils import tensors_to_float, save_json
               help='Path to content image.')
 @click.option('-style', '--style_image_path', type=click.Path(),
               help='Path to style image.')
+@click.option('-ig', '--init_generated', type=click.Choice(['random', 'content'], case_sensitive=False),
+              help='Initialized generated image from content image or random values.')
 @click.option('-o', '--output_image_path', type=click.Path(),
               help='Path to output (generated) image.')
 @click.option('-l', '--losses_path', type=click.Path(),
               help='Path to losses.json file.')
 def run_neural_transfer(
+        params: str,
         content_image_path: str,
         style_image_path: str,
+        init_generated: str,
         output_image_path: str,
         losses_path: str,
-        params: str,
 ) -> None:
     """
     Runs neural style transfer based on provided content and style image.
 
     Args:
+        params (str): Path to params.yaml file.
         content_image_path (str): Path to content image.
         style_image_path (str): Path to style image.
+        init_generated (str): Initialized generated image from content image or random values.
         output_image_path (str): Save location of generated image.
         losses_path (str): Save location for losses.json file.
-        params (str): Path to params.yaml file.
 
     Returns:
         None: Outputs generated image to `output_image_path`.
@@ -56,8 +61,19 @@ def run_neural_transfer(
     images = {
         'content_image': Image.open(content_image_path),
         'style_image': Image.open(style_image_path),
-        'input_image': Image.open(content_image_path),  # Use content image as starting point
     }
+
+    # Initialize generated (input) image
+    if init_generated == 'random':
+        shape = np.array(images['content_image']).shape
+        generated_image = np.random.rand(*shape) * 255
+        generated_image = generated_image.astype(np.uint8)
+        generated_image = Image.fromarray(generated_image)
+    elif init_generated == 'content':
+        generated_image = images['content_image'].copy()
+    else:
+        raise ValueError(f"Generated image initialization must be `random` or `content`")
+    images['input_image'] = generated_image
 
     # PREPROCESS
     mean = params['preprocess'].get('mean')
