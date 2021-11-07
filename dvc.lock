@@ -34,16 +34,16 @@ stages:
       size: 2546
     params:
       params.yaml:
-        train.iterations: 40
+        train.iterations: 100
         train.loss.beta: 1000.0
         train.loss.normalize_gram_matrix: true
     outs:
     - path: ./results/generated_The_Scream.jpg
-      md5: 645096050509259ecc74af8b83554b15
-      size: 15119
+      md5: b8ec81b4189486540f59a3a33db09569
+      size: 15006
     - path: ./results/losses_The_Scream.jpg.json
-      md5: 660b5364d60f4f2a83d75112d9df7747
-      size: 285930
+      md5: 63e121f09276d56e9b13f2edf2612607
+      size: 716515
   run_style_transfer@Starry_Night_Van_Gogh.jpg:
     cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront_Andreas_Praefcke.jpg
       -style ./images/Starry_Night_Van_Gogh.jpg -o ./results/generated_Starry_Night_Van_Gogh.jpg
@@ -91,16 +91,16 @@ stages:
       size: 2546
     params:
       params.yaml:
-        train.iterations: 40
+        train.iterations: 100
         train.loss.beta: 1000.0
         train.loss.normalize_gram_matrix: true
     outs:
     - path: ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
-      md5: 30dba8c751e110ef330462c3de53ef29
-      size: 11042
+      md5: d2c97d0866de874453cae4a79707bdbe
+      size: 10688
     - path: ./results/losses_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg.json
-      md5: 5d5fe1f0e4407d8e247aedbedd565b05
-      size: 287412
+      md5: fd7e8a1de49f4d34c191ade08ce7606d
+      size: 719509
   run_style_transfer@Vassily_Kandinsky_Composition_7.jpg:
     cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront.jpg
       -style ./images/Vassily_Kandinsky_Composition_7.jpg -ig random -o ./results/generated_Vassily_Kandinsky_Composition_7.jpg
@@ -124,16 +124,16 @@ stages:
       size: 2546
     params:
       params.yaml:
-        train.iterations: 40
+        train.iterations: 100
         train.loss.beta: 1000.0
         train.loss.normalize_gram_matrix: true
     outs:
     - path: ./results/generated_Vassily_Kandinsky_Composition_7.jpg
-      md5: 50ea6cc7874ba15009a81561888f17a2
-      size: 23468
+      md5: 29e01f71c0a9ddca85a48afd19d80cdd
+      size: 23662
     - path: ./results/losses_Vassily_Kandinsky_Composition_7.jpg.json
-      md5: 5fcc9629950d8714dc9bc3afc9596e89
-      size: 285320
+      md5: 8292a744f0cc3de1c79ca7679a3a9842
+      size: 715466
   run_style_transfer@Van_Gogh_Starry_Night.jpg:
     cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront.jpg
       -style ./images/Van_Gogh_Starry_Night.jpg -ig random -o ./results/generated_Van_Gogh_Starry_Night.jpg
@@ -157,16 +157,16 @@ stages:
       size: 2546
     params:
       params.yaml:
-        train.iterations: 40
+        train.iterations: 100
         train.loss.beta: 1000.0
         train.loss.normalize_gram_matrix: true
     outs:
     - path: ./results/generated_Van_Gogh_Starry_Night.jpg
-      md5: 830b0c0d2685ce145cac12f1a7f7da31
-      size: 19303
+      md5: 0c748e8d64fcc8b07a50fbb4d0a5f6f4
+      size: 19162
     - path: ./results/losses_Van_Gogh_Starry_Night.jpg.json
-      md5: 6efb92446a32ab46c7b431736a7b160a
-      size: 287309
+      md5: 39a80e2842e4d93bbfc3e8d76f74d71c
+      size: 719753
   run_style_transfer@Shipwreck_of_the_Minotaur_William_Turner.jpg:
     cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront.jpg
       -style ./images/Shipwreck_of_the_Minotaur_William_Turner.jpg -ig random -o ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg
@@ -190,41 +190,41 @@ stages:
       size: 2546
     params:
       params.yaml:
-        train.iterations: 40
+        train.iterations: 100
         train.loss.beta: 1000.0
         train.loss.normalize_gram_matrix: true
     outs:
     - path: ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg
-      md5: 8abadc50c1112167bf05ee894a3bc78a
-      size: 11374
+      md5: 28bcea5cc076de2b7614f9eefad41ded
+      size: 10944
     - path: ./results/losses_Shipwreck_of_the_Minotaur_William_Turner.jpg.json
-      md5: 432159d9bb540d8e7f31808b4414ad46
-      size: 287109
+      md5: 170627cebba837beef7ce57bf940dc8b
+      size: 719901
   plot_result_images:
     cmd: python -m src.plot_images -i ./results/generated_The_Scream.jpg -i ./results/generated_Van_Gogh_Starry_Night.jpg
       -i ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg -i ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
       -i ./results/generated_Vassily_Kandinsky_Composition_7.jpg -o ./results/style_transfer_results.jpg
-      -t "Random initialization, 40 iterations"
+      -t "Random initialization, 100 iterations"
     deps:
     - path: ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
-      md5: 30dba8c751e110ef330462c3de53ef29
-      size: 11042
+      md5: d2c97d0866de874453cae4a79707bdbe
+      size: 10688
     - path: ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg
-      md5: 8abadc50c1112167bf05ee894a3bc78a
-      size: 11374
+      md5: 28bcea5cc076de2b7614f9eefad41ded
+      size: 10944
     - path: ./results/generated_The_Scream.jpg
-      md5: 645096050509259ecc74af8b83554b15
-      size: 15119
+      md5: b8ec81b4189486540f59a3a33db09569
+      size: 15006
     - path: ./results/generated_Van_Gogh_Starry_Night.jpg
-      md5: 830b0c0d2685ce145cac12f1a7f7da31
-      size: 19303
+      md5: 0c748e8d64fcc8b07a50fbb4d0a5f6f4
+      size: 19162
     - path: ./results/generated_Vassily_Kandinsky_Composition_7.jpg
-      md5: 50ea6cc7874ba15009a81561888f17a2
-      size: 23468
+      md5: 29e01f71c0a9ddca85a48afd19d80cdd
+      size: 23662
     - path: ./src/plot_images.py
       md5: ecd647068f190e031779a5dd26429d23
       size: 925
     outs:
     - path: ./results/style_transfer_results.jpg
-      md5: a53cdcb2e624b7020cb2945bd332c0f9
-      size: 256000
+      md5: e20a3a78ed3f4edeb669d01d56f014bd
+      size: 254422
