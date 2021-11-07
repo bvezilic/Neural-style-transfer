@@ -24,7 +24,7 @@ train:
     alpha: 1.
     beta: 1000.
     normalize_gram_matrix: true
-  iterations: 20
+  iterations: 30
   init_generated: random
 plots:
-  title: Random initialization, 20 iterations
+  title: Random initialization, 30 iterations
