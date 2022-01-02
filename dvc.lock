@@ -13,7 +13,8 @@ stages:
       nfiles: 6
   run_style_transfer@The_Scream.jpg:
     cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront.jpg
-      -style ./images/The_Scream.jpg -o ./results/generated_The_Scream.jpg -l ./results/losses_The_Scream.jpg.json
+      -style ./images/The_Scream.jpg -ig content -o ./results/generated_The_Scream.jpg
+      -l ./results/losses_The_Scream.jpg.json
     deps:
     - path: ./images
       md5: 9976d8132ac755ca51d0838d8915c8e2.dir
@@ -26,8 +27,8 @@ stages:
       md5: 3e7dce6682488ed2dc2c521b8f92cd24
       size: 3304
     - path: ./src/run_style_transfer.py
-      md5: 4fe3c994f480df60c08e68d477fa6c39
-      size: 5399
+      md5: ce9ca42c0e03dfaa2c470fb6382feeff
+      size: 6201
     - path: ./src/transforms.py
       md5: a940905c193697b24de3c623f8131088
       size: 2546
@@ -38,10 +39,10 @@ stages:
         train.loss.normalize_gram_matrix: false
     outs:
     - path: ./results/generated_The_Scream.jpg
-      md5: 8d8cc3c35f7428ad6b3b97298747a0df
-      size: 13880
+      md5: f14ca975d7d531ec9a1e4911e3808a2d
+      size: 13775
     - path: ./results/losses_The_Scream.jpg.json
-      md5: e6d9ce0aae51cf440a947fbc33e4af51
+      md5: 68e49e6b6792b4a1ca8f2e0fcff039e2
       size: 58421
   run_style_transfer@Starry_Night_Van_Gogh.jpg:
     cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront_Andreas_Praefcke.jpg
@@ -69,7 +70,7 @@ stages:
       size: 23418
   run_style_transfer@Pablo_Picasso_Figure_dans_un_Fauteuil.jpg:
     cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront.jpg
-      -style ./images/Pablo_Picasso_Figure_dans_un_Fauteuil.jpg -o ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
+      -style ./images/Pablo_Picasso_Figure_dans_un_Fauteuil.jpg -ig content -o ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
       -l ./results/losses_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg.json
     deps:
     - path: ./images
@@ -83,8 +84,8 @@ stages:
       md5: 3e7dce6682488ed2dc2c521b8f92cd24
       size: 3304
     - path: ./src/run_style_transfer.py
-      md5: 4fe3c994f480df60c08e68d477fa6c39
-      size: 5399
+      md5: ce9ca42c0e03dfaa2c470fb6382feeff
+      size: 6201
     - path: ./src/transforms.py
       md5: a940905c193697b24de3c623f8131088
       size: 2546
@@ -95,14 +96,14 @@ stages:
         train.loss.normalize_gram_matrix: false
     outs:
     - path: ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
-      md5: b06835a0f7a6d00a8dffcba5431a107b
-      size: 10990
+      md5: 17a9c6136c9af14f3f32cea4fe3c7d68
+      size: 11004
     - path: ./results/losses_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg.json
-      md5: f77142340c6844f0ebc5ed63dc52f836
-      size: 59168
+      md5: 425b4771a4771fc89115a895e09cf349
+      size: 59112
   run_style_transfer@Vassily_Kandinsky_Composition_7.jpg:
     cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront.jpg
-      -style ./images/Vassily_Kandinsky_Composition_7.jpg -o ./results/generated_Vassily_Kandinsky_Composition_7.jpg
+      -style ./images/Vassily_Kandinsky_Composition_7.jpg -ig content -o ./results/generated_Vassily_Kandinsky_Composition_7.jpg
       -l ./results/losses_Vassily_Kandinsky_Composition_7.jpg.json
     deps:
     - path: ./images
@@ -116,8 +117,8 @@ stages:
       md5: 3e7dce6682488ed2dc2c521b8f92cd24
       size: 3304
     - path: ./src/run_style_transfer.py
-      md5: 4fe3c994f480df60c08e68d477fa6c39
-      size: 5399
+      md5: ce9ca42c0e03dfaa2c470fb6382feeff
+      size: 6201
     - path: ./src/transforms.py
       md5: a940905c193697b24de3c623f8131088
       size: 2546
@@ -128,14 +129,14 @@ stages:
         train.loss.normalize_gram_matrix: false
     outs:
     - path: ./results/generated_Vassily_Kandinsky_Composition_7.jpg
-      md5: 8c2cf68aecab6d96933ee54d85704324
-      size: 23163
+      md5: 4bfa28a646ccaec96d3ca2f4f20a2f6a
+      size: 23221
     - path: ./results/losses_Vassily_Kandinsky_Composition_7.jpg.json
-      md5: 5b2ece20683e1075d91c99aa768f424c
-      size: 57886
+      md5: fc10a5a0284ea57e1f0c5ce378c2c3a7
+      size: 57859
   run_style_transfer@Van_Gogh_Starry_Night.jpg:
     cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront.jpg
-      -style ./images/Van_Gogh_Starry_Night.jpg -o ./results/generated_Van_Gogh_Starry_Night.jpg
+      -style ./images/Van_Gogh_Starry_Night.jpg -ig content -o ./results/generated_Van_Gogh_Starry_Night.jpg
       -l ./results/losses_Van_Gogh_Starry_Night.jpg.json
     deps:
     - path: ./images
@@ -149,8 +150,8 @@ stages:
       md5: 3e7dce6682488ed2dc2c521b8f92cd24
       size: 3304
     - path: ./src/run_style_transfer.py
-      md5: 4fe3c994f480df60c08e68d477fa6c39
-      size: 5399
+      md5: ce9ca42c0e03dfaa2c470fb6382feeff
+      size: 6201
     - path: ./src/transforms.py
       md5: a940905c193697b24de3c623f8131088
       size: 2546
@@ -161,15 +162,15 @@ stages:
         train.loss.normalize_gram_matrix: false
     outs:
     - path: ./results/generated_Van_Gogh_Starry_Night.jpg
-      md5: ad095192626190a21f7b011bb98f9731
-      size: 18697
+      md5: 8f6a4571720edc68be96c4ba319171cb
+      size: 18680
     - path: ./results/losses_Van_Gogh_Starry_Night.jpg.json
-      md5: 69ed0a6d841cb490ce24cad5cf687244
-      size: 59156
+      md5: f8692f78fec176d4f1cb250175ec5072
+      size: 59297
   run_style_transfer@Shipwreck_of_the_Minotaur_William_Turner.jpg:
     cmd: python -m src.run_style_transfer -p ./params.yaml -content ./images/Tuebingen_Neckarfront.jpg
-      -style ./images/Shipwreck_of_the_Minotaur_William_Turner.jpg -o ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg
-      -l ./results/losses_Shipwreck_of_the_Minotaur_William_Turner.jpg.json
+      -style ./images/Shipwreck_of_the_Minotaur_William_Turner.jpg -ig content -o
+      ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg -l ./results/losses_Shipwreck_of_the_Minotaur_William_Turner.jpg.json
     deps:
     - path: ./images
       md5: 9976d8132ac755ca51d0838d8915c8e2.dir
@@ -182,8 +183,8 @@ stages:
       md5: 3e7dce6682488ed2dc2c521b8f92cd24
       size: 3304
     - path: ./src/run_style_transfer.py
-      md5: 4fe3c994f480df60c08e68d477fa6c39
-      size: 5399
+      md5: ce9ca42c0e03dfaa2c470fb6382feeff
+      size: 6201
     - path: ./src/transforms.py
       md5: a940905c193697b24de3c623f8131088
       size: 2546
@@ -194,11 +195,11 @@ stages:
         train.loss.normalize_gram_matrix: false
     outs:
     - path: ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg
-      md5: 498c4b4a1a23569be55d7b6a9f257dc0
-      size: 10722
+      md5: 624286c2d049e38f3edc8d43c4b1f04a
+      size: 10794
     - path: ./results/losses_Shipwreck_of_the_Minotaur_William_Turner.jpg.json
-      md5: c5d7965795c66073af9d561d11142751
-      size: 60052
+      md5: 21b1a1e7ec09e588fabb5468768adcd6
+      size: 60075
   plot_result_images:
     cmd: python -m src.plot_images -i ./results/generated_The_Scream.jpg -i ./results/generated_Van_Gogh_Starry_Night.jpg
       -i ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg -i ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
@@ -206,24 +207,24 @@ stages:
       -t "Gram matrix normalization=False"
     deps:
     - path: ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
-      md5: b06835a0f7a6d00a8dffcba5431a107b
-      size: 10990
+      md5: 17a9c6136c9af14f3f32cea4fe3c7d68
+      size: 11004
     - path: ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg
-      md5: 498c4b4a1a23569be55d7b6a9f257dc0
-      size: 10722
+      md5: 624286c2d049e38f3edc8d43c4b1f04a
+      size: 10794
     - path: ./results/generated_The_Scream.jpg
-      md5: 8d8cc3c35f7428ad6b3b97298747a0df
-      size: 13880
+      md5: f14ca975d7d531ec9a1e4911e3808a2d
+      size: 13775
     - path: ./results/generated_Van_Gogh_Starry_Night.jpg
-      md5: ad095192626190a21f7b011bb98f9731
-      size: 18697
+      md5: 8f6a4571720edc68be96c4ba319171cb
+      size: 18680
     - path: ./results/generated_Vassily_Kandinsky_Composition_7.jpg
-      md5: 8c2cf68aecab6d96933ee54d85704324
-      size: 23163
+      md5: 4bfa28a646ccaec96d3ca2f4f20a2f6a
+      size: 23221
     - path: ./src/plot_images.py
       md5: ecd647068f190e031779a5dd26429d23
       size: 925
     outs:
     - path: ./results/style_transfer_results.jpg
-      md5: 99c810b5987f024af0fc90682e7faeeb
-      size: 250945
+      md5: 919401a615640bc7156d59adfc3bee07
+      size: 250733
