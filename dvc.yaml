@@ -11,6 +11,7 @@ stages:
         -p ./params.yaml
         -content ./images/Tuebingen_Neckarfront.jpg
         -style ./images/${item}
+        -ig ${train.init_generated}
         -o ./results/generated_${item}
         -l ./results/losses_${item}.json
       deps:
@@ -44,6 +45,6 @@ stages:
       - ./results/generated_Shipwreck_of_the_Minotaur_William_Turner.jpg
       - ./results/generated_Pablo_Picasso_Figure_dans_un_Fauteuil.jpg
       - ./results/generated_Vassily_Kandinsky_Composition_7.jpg
-    outs:
+    plots:
       - ./results/style_transfer_results.jpg:
           cache: false

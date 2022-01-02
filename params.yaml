@@ -25,5 +25,6 @@ train:
     beta: 1000.
     normalize_gram_matrix: false
   iterations: 10
+  init_generated: "content"
 plots:
   title: Gram matrix normalization=False

@@ -10,6 +10,7 @@ dependencies:
   - torchaudio
   - cudatoolkit=10.2
   - matplotlib
+  - pandas
   - dvc
   - tqdm
   - click
