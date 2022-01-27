@@ -1,30 +1,30 @@
 preprocess:
   mean:
-    - 0.485
-    - 0.456
-    - 0.406
+  - 0.485
+  - 0.456
+  - 0.406
   std:
-    - 0.229
-    - 0.224
-    - 0.225
+  - 0.229
+  - 0.224
+  - 0.225
   resize:
-    - 224
-    - 224
+  - 224
+  - 224
 vgg19:
   content_layers_ids:
-    - 21
+  - 21
   style_layers_ids:
-    - 0
-    - 5
-    - 10
-    - 19
-    - 28
+  - 0
+  - 5
+  - 10
+  - 19
+  - 28
 train:
   loss:
     alpha: 1.
     beta: 1000.
-    normalize_gram_matrix: True
+    normalize_gram_matrix: true
   iterations: 10
-  init_generated: "content"
+  init_generated: content
 plots:
-  title: "Neural style transfer results"
+  title: LBFGS
