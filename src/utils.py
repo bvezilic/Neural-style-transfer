@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import Dict, Union, List
 
-import PIL
+from PIL import Image
 import matplotlib.pyplot as plt
 import torch
 
@@ -57,7 +57,7 @@ def save_json(obj: Dict, filepath: Union[str, Path]) -> None:
         json.dump(obj, fp)
 
 
-def plot_images(images: List[PIL.Image.Image], title: str) -> plt.Figure:
+def plot_images(images: List[Image.Image], title: str) -> plt.Figure:
     """
     Plots list of images in a single row (grid). Figure size by default is set to (16,4).
 

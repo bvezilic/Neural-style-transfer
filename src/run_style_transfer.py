@@ -122,7 +122,7 @@ def run_neural_transfer(
     # OPTIMIZER
     images['input_image'].requires_grad_(True)
     model.requires_grad_(False)
-    optimizer = optim.LBFGS(params=[images['input_image']])
+    optimizer = optim.Adam(params=[images['input_image']], lr=1e-2)
 
     # FINAL RUN
     iterations = params['train'].get('iterations')
@@ -152,7 +152,7 @@ def run_neural_transfer(
             return total_loss
 
         optimizer.step(closure=closure)
-        print(f"Iteration: {i * optimizer.defaults['max_iter']}, Loss: {all_losses['losses'][-1]['total_loss']}")
+        print(f"Iteration: {i}, Loss: {all_losses['losses'][-1]['total_loss']}")
 
     # Log all losses to json
     save_json(all_losses, losses_path)
