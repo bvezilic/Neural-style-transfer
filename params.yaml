@@ -23,8 +23,8 @@ train:
   loss:
     alpha: 1.
     beta: 1000.
-    normalize_gram_matrix: True
+    normalize_gram_matrix: true
   iterations: 10
-  init_generated: "content"
+  init_generated: content
 plots:
-  title: "Neural style transfer results"
+  title: LBFGS
