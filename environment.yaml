@@ -4,7 +4,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.9
+  - python=3.10
   - pytorch
   - torchvision
   - torchaudio
@@ -12,6 +12,7 @@ dependencies:
   - matplotlib
   - pandas
   - dvc
+  - gradio
   - tqdm
   - click
   - jupyterlab
