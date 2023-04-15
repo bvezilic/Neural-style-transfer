@@ -1,7 +1,6 @@
 import gradio as gr
 import torch.cuda
 import torch.optim as optim
-import tqdm
 import yaml
 from torchvision.transforms import Compose, Normalize, Resize, ToTensor, Lambda, ToPILImage
 
@@ -47,7 +46,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 model.to(device).eval()  # Set immediately to eval mode
 
 
-def run_style_transfer(content_image, style_image, iterations, alpha, beta):
+def run_style_transfer(content_image, style_image, iterations, alpha, beta, progress=gr.Progress()):
     # PRE-PROCESS
     content_image = preprocess(content_image).to(device)
     style_image = preprocess(style_image).to(device)
@@ -73,7 +72,7 @@ def run_style_transfer(content_image, style_image, iterations, alpha, beta):
 
     # FINAL RUN
     iterations = iterations
-    for _ in tqdm.tqdm(range(iterations)):
+    for _ in progress.tqdm(range(iterations), desc="Applying style"):
         def closure():
             # Clear gradients
             optimizer.zero_grad()
@@ -101,6 +100,12 @@ def run_style_transfer(content_image, style_image, iterations, alpha, beta):
     return generated_image
 
 
+examples = [
+    ['images/Tuebingen_Neckarfront.jpg', 'images/Van_Gogh_Starry_Night.jpg', None, None, None],
+    ['images/Tuebingen_Neckarfront.jpg', 'images/The_Scream.jpg', None, None, None],
+    ['images/Vassily_Kandinsky_Composition_7.jpg', 'images/Tuebingen_Neckarfront.jpg', None, None, None],
+]
+
 # DEMO APP
 demo = gr.Interface(fn=run_style_transfer,
                     inputs=[
@@ -110,5 +115,7 @@ demo = gr.Interface(fn=run_style_transfer,
                         gr.Number(value=1., label="Alpha"),
                         gr.Number(value=1000., label="Beta")
                     ],
-                    outputs=gr.Image(shape=(224, 224), type='pil', label="Output Image"))
-demo.launch()
+                    outputs=gr.Image(shape=(224, 224), type='pil', label="Output Image"),
+                    examples=examples,
+                    title="Style transfer")
+demo.queue().launch()
