@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from typing import List, Dict, Callable
+from typing import Callable
 
 import torch.nn as nn
 import torchvision.models as models
@@ -17,10 +17,10 @@ class VGG19(nn.Module):
         style_layers_ids (list): List of layer ids from which to extract output
     """
 
-    def __init__(self, content_layers_ids: List[int], style_layers_ids: List[int]):
+    def __init__(self, content_layers_ids: list[int], style_layers_ids: list[int]):
         super(VGG19, self).__init__()
 
-        self.pretrained_vgg19 = models.vgg19(pretrained=True).features
+        self.pretrained_vgg19 = models.vgg19(pretrained=True, progress=True).features
 
         self.content_layers_ids = content_layers_ids
         self.style_layers_ids = style_layers_ids
@@ -76,7 +76,7 @@ class VGG19(nn.Module):
         self._content_features = OrderedDict({})
         self._style_features = OrderedDict({})
 
-    def forward(self, input_image: Tensor) -> (Tensor, Dict[int, Tensor], Dict[int, Tensor]):
+    def forward(self, input_image: Tensor) -> (Tensor, dict[int, Tensor], dict[int, Tensor]):
         """
         Runs forward pass through pretrained vgg19.
 

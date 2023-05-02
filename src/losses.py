@@ -1,5 +1,3 @@
-from typing import Dict, Union
-
 import torch
 import torch.nn as nn
 from torch import Tensor
@@ -21,7 +19,7 @@ class TotalLoss:
         normalize_gram_matrix (bool): Default to True.
     """
 
-    def __init__(self, content_features: Dict[int, Tensor], style_features: Dict[int, Tensor], alpha: float = 1.,
+    def __init__(self, content_features: dict[int, Tensor], style_features: dict[int, Tensor], alpha: float = 1.,
                  beta: float = 1000., normalize_gram_matrix: bool = True):
         super(TotalLoss, self).__init__()
 
@@ -37,8 +35,8 @@ class TotalLoss:
             for layer_idx, feature in style_features.items()
         }
 
-    def __call__(self, input_content_features: Dict[int, Tensor], input_style_features: Dict[int, Tensor]) \
-            -> Dict[str, Union[float, Tensor]]:
+    def __call__(self, input_content_features: dict[int, Tensor], input_style_features: dict[int, Tensor]) \
+            -> dict[str, float | Tensor]:
         """
         Computes total loss for generated image.
 

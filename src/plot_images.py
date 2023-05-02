@@ -1,5 +1,3 @@
-from typing import List
-
 import click
 from PIL import Image
 
@@ -10,7 +8,7 @@ from src.utils import plot_images
 @click.option('-i', '--image', type=click.Path(), multiple=True, help='Path to image.')
 @click.option('-o', '--output_plot', type=click.Path(), help='Save location of the plot.')
 @click.option('-t', '--title', type=str, default='', help='Title of plot.')
-def save_plot_images(image: List[str], output_plot: str, title: str) -> None:
+def save_plot_images(image: list[str], output_plot: str, title: str) -> None:
     """
     Plots multiple images together in a grid and saves to file (.jpg).
 

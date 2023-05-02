@@ -1,13 +1,12 @@
 import json
 from pathlib import Path
-from typing import Dict, Union, List
 
 import PIL
 import matplotlib.pyplot as plt
 import torch
 
 
-def clone_tensors(tensors: Dict[int, torch.Tensor]) -> Dict[int, torch.Tensor]:
+def clone_tensors(tensors: dict[int, torch.Tensor]) -> dict[int, torch.Tensor]:
     """
     Clones all tensors in dictionary.
 
@@ -20,7 +19,7 @@ def clone_tensors(tensors: Dict[int, torch.Tensor]) -> Dict[int, torch.Tensor]:
     return {idx: tensor.clone() for idx, tensor in tensors.items()}
 
 
-def tensors_to_float(tensors: Dict[str, torch.Tensor]) -> Dict[str, float]:
+def tensors_to_float(tensors: dict[str, torch.Tensor]) -> dict[str, float]:
     """
     Converts all single-value tensors in dictionary to float values.
 
@@ -42,7 +41,7 @@ def tensors_to_float(tensors: Dict[str, torch.Tensor]) -> Dict[str, float]:
     return output
 
 
-def save_json(obj: Dict, filepath: Union[str, Path]) -> None:
+def save_json(obj: dict, filepath: str | Path) -> None:
     """
     Saves dict object to given path.
 
@@ -57,7 +56,7 @@ def save_json(obj: Dict, filepath: Union[str, Path]) -> None:
         json.dump(obj, fp)
 
 
-def plot_images(images: List[PIL.Image.Image], title: str) -> plt.Figure:
+def plot_images(images: list[PIL.Image.Image], title: str) -> plt.Figure:
     """
     Plots list of images in a single row (grid). Figure size by default is set to (16,4).
 
