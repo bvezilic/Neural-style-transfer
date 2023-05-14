@@ -2,6 +2,12 @@
 
 PyTorch's implementation of Neural Style Transfer. Learning repository with several experiments and playing around.
 
+## Usage
+
+### Gradio app
+
+Run demo app with `python app.py`
+
 ## Quick overview
 
 ![neural-style-transfer](https://user-images.githubusercontent.com/16206648/139554170-1c63cd04-c83f-4ea8-bb12-da05b87d5c9a.jpg)
