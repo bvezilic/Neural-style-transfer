@@ -4,6 +4,7 @@ from typing import Callable
 import torch.nn as nn
 import torchvision.models as models
 from torch import Tensor
+from torchvision.models import VGG19_Weights
 
 from src.utils import clone_tensors
 
@@ -13,17 +14,19 @@ class VGG19(nn.Module):
     Pretrained VGG19. Uses hooks to extract outputs from different layers.
 
     Args:
-        content_layers_ids (list): List of layer ids from which to extract output
-        style_layers_ids (list): List of layer ids from which to extract output
+        content_layer_ids (list): List of layer ids from which to extract output
+        style_layer_ids (list): List of layer ids from which to extract output
     """
 
-    def __init__(self, content_layers_ids: list[int], style_layers_ids: list[int]):
+    def __init__(self, content_layer_ids: list[int], style_layer_ids: list[int]):
         super(VGG19, self).__init__()
 
-        self.pretrained_vgg19 = models.vgg19(pretrained=True, progress=True).features
+        weights = VGG19_Weights.IMAGENET1K_V1
+        self.preprocess = weights.transforms()
+        self.pretrained_vgg19 = models.vgg19(weights=weights, progress=True).features
 
-        self.content_layers_ids = content_layers_ids
-        self.style_layers_ids = style_layers_ids
+        self.content_layer_ids = content_layer_ids
+        self.style_layer_ids = style_layer_ids
 
         # Cache attributes for temporary storing conv layers output (tensor)
         self._content_features = OrderedDict({})
@@ -31,10 +34,10 @@ class VGG19(nn.Module):
 
         # Register hooks to obtain various outputs
         for idx, module in enumerate(self.pretrained_vgg19.children()):
-            if idx in self.content_layers_ids:
+            if idx in self.content_layer_ids:
                 module.register_forward_hook(self._get_content_activation(idx))
 
-            if idx in self.style_layers_ids:
+            if idx in self.style_layer_ids:
                 module.register_forward_hook(self._get_style_activation(idx))
 
     def _get_content_activation(self, idx: int) -> Callable:
