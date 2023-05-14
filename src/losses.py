@@ -154,11 +154,17 @@ def gram_matrix(feature_maps: Tensor, normalize: bool = False) -> Tensor:
     Returns:
         Tensor: Gram matrix
     """
-    B, C, H, W = feature_maps.size()
+    assert isinstance(feature_maps, torch.Tensor), f"Input tensor should be a torch tensor. Got {type(feature_maps)}"
+    assert feature_maps.is_floating_point(), f"Input  tensor should be a float tensor. Got {feature_maps.dtype}"
+    assert feature_maps.ndim >= 3, f"Expected tensor to be a tensor image of size (..., C, H, W), got " \
+                                   f"tensor.size()={feature_maps.size()}"
 
-    assert B == 1, f"Batch size must be 1! Got B={B}"
+    if feature_maps.ndim == 4:
+        B, C, H, W = feature_maps.size()
+        assert B == 1, f'Batch size must be 1! Got B={B}'
+    elif feature_maps.ndim == 3:
+        C, H, W = feature_maps.size()
 
-    feature_maps = feature_maps.squeeze(0)  # Remove batch_size
     features = feature_maps.view(C, H * W)
     g = torch.mm(features, features.t())
 
