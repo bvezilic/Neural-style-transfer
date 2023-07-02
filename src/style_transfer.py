@@ -183,7 +183,6 @@ def style_transfer(model: VGG19, content_image: PIL.Image, style_image: PIL.Imag
 
         if _progress_callback:
             _progress_callback(step=i, total=iterations)
-        print(f"Iteration: {i * optimizer.defaults['max_iter']}, Loss: {losses[-1]['total_loss']}")
 
     # POST-PROCESSING
     output_image = model.postprocess(output_image)
