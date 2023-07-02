@@ -1,7 +1,7 @@
 import gradio as gr
 
 from src.model import VGG19
-from src.run_style_transfer import style_transfer
+from src.style_transfer import style_transfer
 
 # LOAD MODEL
 content_layer_ids = [21]  # conv4_2

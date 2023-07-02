@@ -15,7 +15,7 @@ stages:
         -o ./results/generated_${item}
         -l ./results/losses_${item}.json
       deps:
-        - ./src/run_style_transfer.py
+        - ./src/style_transfer.py
         - ./src/losses.py
         - ./src/model.py
         - ./src/transforms.py
