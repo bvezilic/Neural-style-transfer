@@ -5,7 +5,9 @@ import torch.nn as nn
 import torchvision.models as models
 from torch import Tensor
 from torchvision.models import VGG19_Weights
+from torchvision.transforms import Compose, Lambda, ToPILImage
 
+from src.transforms import Denormalize
 from src.utils import clone_tensors
 
 
@@ -23,6 +25,11 @@ class VGG19(nn.Module):
 
         weights = VGG19_Weights.IMAGENET1K_V1
         self.preprocess = weights.transforms()
+        self.postprocess = Compose([
+            Denormalize(mean=self.preprocess.mean, std=self.preprocess.std),
+            Lambda(lambda x: x.clamp(0, 1)),
+            ToPILImage()
+        ])
         self.pretrained_vgg19 = models.vgg19(weights=weights, progress=True).features
 
         self.content_layer_ids = content_layer_ids
