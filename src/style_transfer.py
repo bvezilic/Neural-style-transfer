@@ -19,19 +19,17 @@ from src.utils import tensors_to_float
 @click.option('-style', '--style_image_path', type=click.Path(),
               help='Path to style image.')
 @click.option('-ig', '--init_generated', type=click.Choice(['random', 'content'], case_sensitive=False),
-              help='Initialized generated image from content image or random values.')
-@click.option('-a', '--alpha', type=click.FLOAT,
+              default='content', help='Initialized generated image from content image or random values.')
+@click.option('-a', '--alpha', type=click.FLOAT, default=1.,
               help='Weight for content image.')
-@click.option('-b', '--beta', type=click.FLOAT,
+@click.option('-b', '--beta', type=click.FLOAT, default=1000.,
               help='Weight for style image.')
-@click.option('-i', '--iterations', type=click.INT,
+@click.option('-i', '--iterations', type=click.INT, default=10,
               help='Number of iterations.')
 @click.option('--gram-norm/--no-gram-norm', type=click.BOOL, default=True,
               help='Flag whether to normalize gram matrix.')
 @click.option('-o', '--output_image_path', type=click.Path(),
               help='Path to output (generated) image.')
-@click.option('-l', '--losses_path', type=click.Path(),
-              help='Path to losses.json file.')
 def run_neural_transfer(
         content_image_path: str,
         style_image_path: str,
@@ -41,7 +39,6 @@ def run_neural_transfer(
         iterations: int,
         gram_norm: bool,
         output_image_path: str,
-        losses_path: str,
 ) -> None:
     """
     Runs neural style transfer based on provided content and style image.
@@ -55,7 +52,6 @@ def run_neural_transfer(
         iterations (int): Number of iterations.
         gram_norm (bool): Flag whether to normalize gram matrix.
         output_image_path (str): Save location of generated image.
-        losses_path (str): Save location for losses.json file.
 
     Returns:
         None: Outputs generated image to `output_image_path`.
@@ -85,7 +81,7 @@ def run_neural_transfer(
         normalize_gram_matrix=gram_norm
     )
 
-    # Save
+    # Save image
     save_path = Path(output_image_path)
     save_path.parent.mkdir(parents=True, exist_ok=True)
     output_img.save(save_path)
@@ -184,7 +180,9 @@ def style_transfer(model: VGG19, content_image: PIL.Image, style_image: PIL.Imag
             return total_loss
 
         optimizer.step(closure=closure)
-        _progress_callback(step=i, total=iterations)
+
+        if _progress_callback:
+            _progress_callback(step=i, total=iterations)
         print(f"Iteration: {i * optimizer.defaults['max_iter']}, Loss: {losses[-1]['total_loss']}")
 
     # POST-PROCESSING
