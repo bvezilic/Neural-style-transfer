@@ -6,7 +6,7 @@ PyTorch's implementation of Neural Style Transfer. Learning repository with seve
 
 ### Gradio app
 
-Run demo app with: `python app.py`
+Run demo app with: `python gradio_app.py`
 
 ## Jupyter notebook
 
