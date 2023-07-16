@@ -1,4 +1,4 @@
-# Neural-style-transfer
+# Neural-style-transfer 🎨
 
 PyTorch's implementation of Neural Style Transfer. Learning repository with several experiments and playing around.
 
