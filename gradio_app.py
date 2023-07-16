@@ -43,9 +43,7 @@ examples = [
 demo = gr.Interface(
     fn=style_transfer_fn,
     description="""
-    # Neural Style Transfer
-    
-    Demo app for NST (Neural Style Transfer).
+    # Demo app for NST (Neural Style Transfer). Select one of the example below or input your own images.
     """,
     inputs=[
         gr.Image(shape=(224, 224), type="pil", label="Content Image"),
